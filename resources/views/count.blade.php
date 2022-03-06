@@ -1,11 +1,11 @@
 <x-guest-layout>
     <x-slot name="title">
-        Wordle Guess Check
+        Wordle Guess Count
     </x-slot>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <img style="display:block;margin:auto;width: 50%;height: 100%;object-fit: contain;" src="{{ asset('img/check_logo.png') }}" />
+                <img style="display:block;margin:auto;width: 50%;height: 100%;object-fit: contain;" src="{{ asset('img/count_logo_color.png') }}" />
             </a>
         </x-slot>
 
@@ -16,14 +16,26 @@
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-3" :errors="$errors" />
 
-            <form method="POST" action="{{ route('wordle.guess') }}">
+            <form method="POST" action="{{ route('wordle.count') }}">
                 @csrf
 
                 <!-- Wordle Guess -->
                 <div class="mb-3">
-                    <x-label for="guess" value="Check Wordle guess" />
+                    <x-label for="pattern" value="Pattern (Ex: g**s*)" />
 
-                    <x-input id="guess" type="text" name="guess" required autofocus />
+                    <x-input id="pattern" type="text" name="pattern" :value="old('pattern') ?? '*****'" autofocus />
+                </div>
+
+                <div class="mb-3">
+                    <x-label for="included" value="Included Letters" />
+
+                    <x-input id="included" type="text" name="included" :value="old('included')" />
+                </div>
+
+                <div class="mb-3">
+                    <x-label for="excluded" value="Excluded Letters" />
+
+                    <x-input id="excluded" type="text" name="excluded" :value="old('excluded')"/>
                 </div>
                 
                 <!-- Time Zone -->
@@ -32,8 +44,14 @@
                 <!-- Detailed feedback -->
                 <div class="mb-3">
                     <div class="form-check">
-                        <x-checkbox id="details" name="details" :checked="old('details')" />
-                        <label class="form-check-label" for="details">Detailed response?</label>
+                        <x-checkbox id="list" name="list" :checked="old('list')" />
+                        <label class="form-check-label" for="list">Return guess list?</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <x-checkbox id="wordle" name="wordle" :checked="old('wordle')" />
+                        <label class="form-check-label" for="worrdle">Wordles only?</label>
                     </div>
                 </div>
 
@@ -43,7 +61,7 @@
                 </div>
             </form>
         </div>
-        <a href="{{ route('count') }}">Count</a>
+        <a href="{{ route('wordle') }}">Check</a>
         <script>
             window.onload = function(event) {
                 document.getElementById('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone;

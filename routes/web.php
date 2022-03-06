@@ -16,9 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('wordle');
-});
+})->name('wordle');
 
 Route::post('/', \App\Http\Controllers\WordleController::class)->name('wordle.guess');
+
+Route::get('/count', function () {
+    return view('count');
+})->name('count');
+
+Route::post('/count', \App\Http\Controllers\CountController::class)->name('wordle.count');
 
 Route::get('/csrf-token', \App\Http\Controllers\RefreshCsrfTokenController::class)->name('csrf-token');
 
